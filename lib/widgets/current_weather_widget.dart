@@ -3,6 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:mine/models/weather.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class CurrentWeatherWidget extends StatefulWidget {
   final Weather currentWeather;
@@ -35,26 +37,27 @@ class _CurrentWeatherWidgetState extends State<CurrentWeatherWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(widget.locationName, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.blue)),
-          Text(_getCurrentTime(), style: const TextStyle(fontSize: 16, color: Colors.grey)),
-          const SizedBox(height: 20),
+          Text(widget.locationName, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.blue)),
+          SizedBox(height: 10),
+          Text(_getCurrentTime(), style: TextStyle(fontSize: 16, color: Colors.grey)),
+          SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('${widget.currentWeather.temperature}°C', style: const TextStyle(fontSize: 60, fontWeight: FontWeight.bold, color: Colors.black)),
+              Text('${widget.currentWeather.temperature}°C', style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold, color: Colors.black)),
               if (_getPrecipitationIcon() != null) _buildWeatherIcon(_getPrecipitationIcon()!),
             ],
           ),
-          const SizedBox(height: 20),
-          Text('Feels Like ${_getValueOrNA(widget.currentWeather.feelsLikeTemperature)}°C', style: const TextStyle(fontSize: 18, color: Colors.grey)),
-          const SizedBox(height: 10),
-          Text('${_getPrecipitation()}', style: const TextStyle(fontSize: 18, color: Colors.grey)),
-          const SizedBox(height: 20),
-          const Divider(thickness: 1.5, color: Colors.grey),
-          const SizedBox(height: 20),
+          SizedBox(height: 20),
+          Text('Feels Like ${_getValueOrNA(widget.currentWeather.feelsLikeTemperature)}°C', style: TextStyle(fontSize: 18, color: Colors.grey)),
+          SizedBox(height: 10),
+          Text('${_getPrecipitation()}', style: TextStyle(fontSize: 18, color: Colors.grey)),
+          SizedBox(height: 20),
+          Divider(thickness: 1.5, color: Colors.grey),
+          SizedBox(height: 20),
           ElevatedButton(
             onPressed: () => setState(() => _isDetailedInfoVisible = !_isDetailedInfoVisible),
-            child: Text(_isDetailedInfoVisible ? 'Hide Details' : 'Show Details', style: const TextStyle(color: Colors.black)),
+            child: Text(_isDetailedInfoVisible ? 'Hide Details' : 'Show Details', style: TextStyle(color: Colors.black)),
           ),
           Visibility(
             visible: _isDetailedInfoVisible,
@@ -83,7 +86,9 @@ class _CurrentWeatherWidgetState extends State<CurrentWeatherWidget> {
       children: [
         Icon(iconData, color: Colors.blue[300], size: 24),
         const SizedBox(width: 10),
-        Text('$label: $value$unit', style: const TextStyle(color: Colors.black, fontSize: 16)),
+        Expanded(
+          child: Text('$label: $value$unit', style: TextStyle(color: Colors.black, fontSize: 16)),
+        ),
       ],
     ),
   );
@@ -116,4 +121,5 @@ class _CurrentWeatherWidgetState extends State<CurrentWeatherWidget> {
     var formatter = DateFormat('EEE, MMM d, h:mm a');
     return formatter.format(now);
   }
+
 }
