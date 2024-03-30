@@ -43,7 +43,6 @@ class SearchDialog extends StatefulWidget {
 
 class _SearchDialogState extends State<SearchDialog> {
   final TextEditingController _searchController = TextEditingController();
-  String? _tempLocationName;
   String? _error;
   List<dynamic> _predictions = [];
 
@@ -66,7 +65,6 @@ class _SearchDialogState extends State<SearchDialog> {
                 ),
                 onChanged: (value) {
                   setState(() {
-                    _tempLocationName = value;
                     _error = null; // Clear error when user starts typing
                   });
                   if (value.isNotEmpty) {

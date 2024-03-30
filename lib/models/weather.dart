@@ -19,6 +19,7 @@ class Weather {
   final double? latitude; // Latitude property
   final double? longitude; // Longitude property
   final String? weatherIconCode; // Weather icon code property
+  final double? cloudCoverage; // Cloud coverage property
 
   Weather({
     required this.temperature,
@@ -40,7 +41,8 @@ class Weather {
     this.zone,
     this.latitude,
     this.longitude,
-    this.weatherIconCode, // Include weather icon code property
+    this.weatherIconCode,
+    this.cloudCoverage, // Include cloud coverage property
   });
 
   static Weather fromJson(Map<String, dynamic> data) {
@@ -54,7 +56,7 @@ class Weather {
       humidity: data['rh']?.toDouble() ?? 0.0,
       chanceOfRain: data['pop']?.toDouble() ?? 0.0,
       aqi: data['aqi']?.toDouble() ?? 0.0,
-      uvIndex: data['uv']?.toDouble()  ?? 0.0,
+      uvIndex: data['uv']?.toDouble() ?? 0.0,
       pressure: data['pres']?.toDouble() ?? 0.0,
       visibility: data['vis']?.toDouble() ?? 0.0,
       sunriseTime: data['sunrise'] ?? '',
@@ -64,8 +66,8 @@ class Weather {
       latitude: data['lat']?.toDouble() ?? 0.0,
       longitude: data['lon']?.toDouble() ?? 0.0,
       weatherIconCode: data['weather']['icon'] ?? '',
+      cloudCoverage: data['clouds']?.toDouble() ?? 0.0, // Parse cloud coverage
       time: data['ob_time'] != null ? DateTime.parse(data['ob_time']) : null,
     );
   }
-
 }

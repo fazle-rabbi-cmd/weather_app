@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:mine/models/weather.dart';
 import 'package:mine/screens/past_weather_screen.dart';
 import 'package:mine/screens/settings_screen.dart';

@@ -3,8 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:mine/models/weather.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 class CurrentWeatherWidget extends StatefulWidget {
   final Weather currentWeather;
@@ -63,10 +61,11 @@ class _CurrentWeatherWidgetState extends State<CurrentWeatherWidget> {
             visible: _isDetailedInfoVisible,
             child: Column(
               children: [
-                _buildWeatherInfo('Wind Speed', _getWindSpeed(), '', Icons.air_outlined),
+                _buildWeatherInfo('Wind Speed', _getWindSpeed(), '', Icons.speed_outlined),
                 _buildWeatherInfo('Humidity', _getValueOrNA(widget.currentWeather.humidity), '%', Icons.water_drop),
+                _buildWeatherInfo('Cloud Coverage', _getValueOrNA(widget.currentWeather.cloudCoverage), '', Icons.cloud_circle),
                 _buildWeatherInfo('Chance of Rain', _getValueOrNA(widget.currentWeather.chanceOfRain), '%', Icons.beach_access),
-                _buildWeatherInfo('AQI', _getValueOrNA(widget.currentWeather.aqi), '', Icons.air),
+                _buildWeatherInfo('AQI', _getValueOrNA(widget.currentWeather.aqi), '%', Icons.air),
                 _buildWeatherInfo('UV Index', _getValueOrNA(widget.currentWeather.uvIndex), '', Icons.wb_iridescent_rounded),
                 _buildWeatherInfo('Pressure', _getValueOrNA(widget.currentWeather.pressure), 'hPa', Icons.compress),
                 _buildWeatherInfo('Visibility', _getValueOrNA(widget.currentWeather.visibility), 'km', Icons.visibility_outlined),
@@ -115,11 +114,9 @@ class _CurrentWeatherWidgetState extends State<CurrentWeatherWidget> {
   String _getCurrentTime() {
     tz.initializeTimeZones();
     tz.Location? location = tz.getLocation(widget.timezoneIdentifier);
-    if (location == null) return 'Time not available';
     tz.setLocalLocation(location);
     var now = tz.TZDateTime.now(location);
     var formatter = DateFormat('EEE, MMM d, h:mm a');
     return formatter.format(now);
   }
-
 }
