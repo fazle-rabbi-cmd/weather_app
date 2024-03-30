@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mine/models/weather.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 class CurrentWeatherWidget extends StatefulWidget {
   final Weather currentWeather;
   final String locationName;
+  final String timezoneIdentifier; // Add this line
 
-  const CurrentWeatherWidget({Key? key, required this.currentWeather, required this.locationName}) : super(key: key);
+  const CurrentWeatherWidget({Key? key, required this.currentWeather, required this.locationName, required this.timezoneIdentifier}) : super(key: key);
 
   @override
   _CurrentWeatherWidgetState createState() => _CurrentWeatherWidgetState();
@@ -13,6 +17,7 @@ class CurrentWeatherWidget extends StatefulWidget {
 
 class _CurrentWeatherWidgetState extends State<CurrentWeatherWidget> {
   bool _isDetailedInfoVisible = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +34,10 @@ class _CurrentWeatherWidgetState extends State<CurrentWeatherWidget> {
           Text(
             widget.locationName,
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.blue),
+          ),
+          Text(
+            _getCurrentTime(),
+            style: const TextStyle(fontSize: 16, color: Colors.grey),
           ),
           const SizedBox(height: 20),
           Row(
@@ -140,6 +149,7 @@ class _CurrentWeatherWidgetState extends State<CurrentWeatherWidget> {
     return value?.toString() ?? 'N/A';
   }
 
+
   String? _getPrecipitationIcon() {
     if (widget.currentWeather.weatherIconCode != null) {
       String iconCode = widget.currentWeather.weatherIconCode!;
@@ -147,4 +157,22 @@ class _CurrentWeatherWidgetState extends State<CurrentWeatherWidget> {
     }
     return null;
   }
+  String _getCurrentTime() {
+    // Use the timezone identifier to get the current time for that location
+    tz.initializeTimeZones();
+    // Find the tz.Location object by its identifier
+    tz.Location? location = tz.getLocation(widget.timezoneIdentifier);
+    if (location == null) {
+      // Handle the case where the location is not found
+      // For example, you could return a default time or an error message
+      return 'Time not available';
+    }
+    // Set the local location to the found location
+    tz.setLocalLocation(location);
+    var now = tz.TZDateTime.now(location);
+    var formatter = DateFormat('h:mm a'); // Example format: 10:30 AM
+    return formatter.format(now);
+  }
+
+
 }

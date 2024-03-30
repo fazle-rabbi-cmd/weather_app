@@ -64,7 +64,7 @@ class Weather {
       latitude: data['lat']?.toDouble() ?? 0.0,
       longitude: data['lon']?.toDouble() ?? 0.0,
       weatherIconCode: data['weather']['icon'] ?? '',
-      time: data['time'] != null ? DateTime.parse(data['time']) : null,
+      time: data['ob_time'] != null ? DateTime.parse(data['ob_time']) : null,
     );
   }
 

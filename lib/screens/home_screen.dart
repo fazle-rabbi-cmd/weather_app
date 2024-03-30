@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:mine/models/weather.dart';
 import 'package:mine/screens/past_weather_screen.dart';
 import 'package:mine/screens/settings_screen.dart';
@@ -29,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Weather> dailyForecast = [];
   List<Weather> hourlyForecast = [];
   String locationName = '';
+  String timezoneIdentifier='';
   bool isLoading = true;
   bool showCropSuggestions = false;
   bool showHourlyForecast = false;
@@ -95,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Card( // Wrap in Card
-                    child: CurrentWeatherWidget(currentWeather: currentWeather, locationName: locationName),
+                    child: CurrentWeatherWidget(currentWeather: currentWeather, locationName: locationName, timezoneIdentifier: currentWeather.zone ?? 'UTC', ),
                   ),
                   SizedBox(height: 20),
                   _buildButton('Crop Suggestions', showCropSuggestions, () => setState(() => showCropSuggestions = !showCropSuggestions)),

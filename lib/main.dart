@@ -4,8 +4,11 @@ import 'screens/home_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/weather_events_screen.dart';
 import 'services/notification_service.dart'; // Import the NotificationService
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 void main() {
+  tz.initializeTimeZones();
   runApp(
     MultiProvider(
       providers: [
